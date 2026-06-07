@@ -94,8 +94,10 @@ const TiltCard = ({ children, color, glow }) => {
   const cardRef = useRef(null);
   const [transform, setTransform] = useState('');
   const [shine, setShine] = useState({ x: 50, y: 50, opacity: 0 });
+  const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window);
 
   const handleMouseMove = (e) => {
+    if (isTouchDevice) return;
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();
@@ -110,6 +112,7 @@ const TiltCard = ({ children, color, glow }) => {
   };
 
   const handleMouseLeave = () => {
+    if (isTouchDevice) return;
     setTransform('perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)');
     setShine(s => ({ ...s, opacity: 0 }));
   };
